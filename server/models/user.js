@@ -15,7 +15,7 @@ var UserSchema = mongoose.Schema({
 	password: {
 		type: String,
 		required: true
-	},
+	}
 });
 
 // define the model User to be added in the database
@@ -26,7 +26,7 @@ var User = module.exports = mongoose.model('User', UserSchema);
 */
 var adminUser = new User({
 	username: 'admin',
-	password: 'admin'
+	password: 'admin',
 });
 createUser(adminUser, function (aux1, aux2) {
 	// do nothing

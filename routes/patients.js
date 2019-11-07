@@ -66,6 +66,9 @@ router.post('/app/addpatient', (req, res) => {
             dateOfBirth: dateOfBirth,
             hospitalNumber: _.toUpper(req.body.hospitalNumber),
             diseases: PD,
+			RFID:req.body.RFID,
+			fingerPrint:req.body.fingerPrint,
+
             lastUpdate: (new Date().getTime())
         });
 

@@ -46,7 +46,16 @@ var PatientSchema = mongoose.Schema({
 	lastUpdate: {
 		type: Number,
 		required: true
-	}
+	},
+		RFID: {
+		type: String,
+		required: false
+	},
+	
+	fingerPrint: {
+		type: String,
+		required: false
+	},
 });
 
 /*
