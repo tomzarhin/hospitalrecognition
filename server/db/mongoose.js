@@ -4,6 +4,6 @@ var mongoose = require ('mongoose');
 mongoose.Promise = global.Promise;
 
 //change the database with yours
-mongoose.connect("mongodb+srv://admin:admin@cluster0.mongodb.net:27017/test");
+mongoose.connect("mongodb://localhost:27017/hospitaldb");
 console.log(mongoose);
 module.exports = {mongoose};
