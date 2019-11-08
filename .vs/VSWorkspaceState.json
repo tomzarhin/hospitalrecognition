@@ -2,10 +2,13 @@
   "ExpandedNodes": [
     "",
     "\\public",
-    "\\public\\js\\flot",
     "\\public\\scripts",
+    "\\routes",
+    "\\server",
     "\\server\\db",
-    "\\server\\models"
+    "\\server\\models",
+    "\\views",
+    "\\views\\layouts"
   ],
   "SelectedNode": "\\public\\scripts\\addpatient.js",
   "PreviewInSolutionExplorer": false
