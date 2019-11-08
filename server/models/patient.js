@@ -49,14 +49,17 @@ var PatientSchema = mongoose.Schema({
 	},
 		RFID: {
 		type: String,
-		required: false
+		required: false,
+		unique:true
 	},
 	
 	fingerPrint: {
 		type: String,
-		required: false
+		required: false,
+		unique:true
 	},
 });
+
 
 /*
 	function to update the diseases and the score of a patient

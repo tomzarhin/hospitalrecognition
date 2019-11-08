@@ -7,10 +7,9 @@
      POST /app/updatepatient/:hospitalNumber -> update disease & score for patient
      POST /app/delete/:hospitalNumber -> detele a patient from the system
 */
-
+var userID=1;
 const express = require('express');
 const _ = require('lodash');
-const router = express.Router();
 
 var {scoreOfDisease, Disease} = require('./../server/models/diseases.js');
 var {Patient} = require('./../server/models/patient.js');
@@ -18,6 +17,9 @@ var {rooms, Room} = require('./../server/models/rooms.js');
 var isValidDate = require('is-valid-date');
 const {ObjectID} = require('mongodb');
 
+const router = express.Router();
+const SerialPort = require('serialport');
+const Readline = require('@serialport/parser-readline');
 
 /*
     GET /app/addpatient -> go to addPatient page
@@ -29,11 +31,32 @@ router.get('/app/addpatient', (req, res) => {
 /*
     POST /addPatient -> add new patient
 */
+
+
 router.post('/app/addpatient', (req, res) => {
     // receive the diseases from the form in the array PD, each element being a String with the disease name
     var PD = req.body.PD;
     var dateOfBirth = req.body.dateOfBirth;
 
+	const port = new SerialPort("COM4", { baudRate: 9600 });
+	const parser = new Readline();
+	port.pipe(parser);
+
+	parser.on('data', line => console.log(`> ${line}`));
+	function kaki(){
+		port.close(function (err) {
+		console.log('port closed', err);})
+	}
+	function waitforinroll(){
+		port.write('INROLL'+userID+'\n');
+		req.body.finger=userID;
+		userID=userID+1;
+		//port.close();
+		setTimeout(kaki,10000);
+	};
+	setTimeout(waitforinroll,2000);
+	req.body.finger=userID;
+	//> ROBOT ONLINE
     // console.log(dateOfBirth);
     // console.log(isValidDate(dateOfBirth));
 
@@ -67,7 +90,7 @@ router.post('/app/addpatient', (req, res) => {
             hospitalNumber: _.toUpper(req.body.hospitalNumber),
             diseases: PD,
 			RFID:req.body.RFID,
-			fingerPrint:req.body.fingerPrint,
+			fingerPrint:req.body.finger,
 
             lastUpdate: (new Date().getTime())
         });
@@ -86,12 +109,36 @@ router.post('/app/addpatient', (req, res) => {
     GET /app/getpatients  -> get a JSON with all patients
 */
 router.get('/app/getpatients', (req, res) => {
-    Patient.find({}).then((patients) => {
-        res.status(200).send(patients);
-    }).catch((err) => {
-        console.log(err);
-        res.status(400).send();
-    });
+	
+	const port = new SerialPort("COM4", { baudRate: 9600 });
+	const parser = new Readline();
+	port.pipe(parser);
+
+	parser.on('data', line => console.log(`> ${line}`));
+	function kaki(){
+		port.close(function (err) {
+		console.log('port closed', err);})
+	}
+	function waitforinroll(){
+		port.write('GETFINGERID\n');
+		port.read();
+		
+		Patient.find({"finger":port.read()}).then((patients) => {
+		res.status(200).send(patients);
+		}).catch((err) => {
+			console.log(err);
+			res.status(400).send();
+		});
+		setTimeout(kaki,10000);
+	};
+	setTimeout(waitforinroll,2000);
+
+    //Patient.find({}).then((patients) => {
+     //   res.status(200).send(patients);
+    //}).catch((err) => {
+    //    console.log(err);
+    //    res.status(400).send();
+    //});
 });
 
 /*
@@ -188,4 +235,11 @@ router.get('/app/deletepatient/:hospitalNumber', (req, res) => {
          });
 });
 
+module.exports.getUserRFID = function(id, callback) {
+	patient.find({"RFID":id});
+}
+
+module.exports.getUserfinger = function(id, callback) {
+	patient.find({"finger":id});
+}
 module.exports = router;

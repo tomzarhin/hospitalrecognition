@@ -260,6 +260,21 @@ $("body").on('dblclick', '#patients-waiting > tbody > tr', function() {
      window.location.href = URL + "/app/patient/" + NHSnumber;
 });
 
+$("body").on('click', '#scanpatient', function() {
+	  //var Patient = require('./../server/models/patient.js');
+      var personFinger = prompt("Please put your finger on the sensor");
+      if (personFinger == null || personFinger == "") {
+      finger = "User cancelled the prompt.";
+      } else {
+      finger = "FINGERPRINT WILL BE SCANNED INTO TXT";
+      }
+	  location.href = "http://localhost:3000/app/patient/TZFAT";
+      //Patient.getUserRFID(personFinger,function(err,patient){
+      //done(err,patient);
+      //});
+});
+     
+
 /*
      Google analytics
 */

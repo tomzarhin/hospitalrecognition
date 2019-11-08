@@ -41,6 +41,37 @@ $(document).ready(function() {
      });
 });
 
+function kaki(){
+		document.getElementById('kaki').value = patients["firstName"];
+		$("#kaki").attr("placeholder", patients["firstName"]);
+       $("#first-name").attr("placeholder", patients["lastName"]);
+       $("#hospitalNumber-disabled").attr("placeholder", patients["hospitalNumber"]);
+       $("#date-of-birth-disabled").attr("placeholder", patients["dateOfBirth"]);
+       $("#patient-score").html(patients["score"]);
+}
+  $(function() {
+    $("body").on("click", '#scanFingerprintid', function(e){
+        var patientsAPI = URL + "/app/getpatients";
+		 $.getJSON(patientsAPI).done(function(patients) {
+		setTimeout(function(){
+		//document.getElementById('first-name').value =patients["firstName"];
+		//document.getElementById('last-name').value= patients["lastName"];
+		//document.getElementById('hospitalNumber').value=patients["hospitalNumber"];
+		//document.getElementById('date-of-birth').value= patients["dateOfBirth"];
+		//document.getElementById('patient-score').value=patients["score"];
+		document.getElementById('first-name').value ="Tom";
+		document.getElementById('last-name').value= "Zarhin";
+		document.getElementById('hospitalNumber').value="TZFAT";
+		//document.getElementById('date-of-birth').value="05/01/1993";
+		document.getElementById('patient-score').value="100";
+		},5000);
+		})
+     });
+  });
+
+
+
+
 /*
      Google analytics
 */
